@@ -36,11 +36,6 @@ mongoose
   })
   .catch((err) => console.log(err));
 
-app.use(express.static(path.join(__dirname, '../client/build')));
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build/index.html'));
-});
-
 app.listen(process.env.PORT, () => {
   console.log(`Server is running in ${process.env.PORT}`);
 });
