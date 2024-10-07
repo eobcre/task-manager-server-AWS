@@ -10,7 +10,14 @@ const tasksRoute = require('./routes/tasks');
 
 dotenv.config();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: 'https://emanning-app.xyz',
+    methods: 'GET, POST, PUT, DELETE',
+    credentials: true,
+  })
+);
+// app.use(cors());
 app.use(express.json());
 // routes
 app.use('/api', loginRoute);

@@ -2,6 +2,14 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const pool = require('../db/db');
+const cors = require('cors');
+
+cors({
+  origin: 'https://emanning-app.xyz',
+  methods: 'GET, POST, PUT, DELETE',
+  credentials: true,
+});
+// router.use(cors());
 
 router.post('/login', async (req, res) => {
   const { name, passcode } = req.body;
