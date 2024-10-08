@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const AssignTask = require('../models/assignTask');
-const pool = require('../db/db');
+const supabase = require('../db/db');
 const cors = require('cors');
 
 cors({
@@ -70,13 +70,21 @@ router.post('/retrieveAssignedTasks', async (req, res) => {
 
 router.post('/retrieveMembers', async (req, res) => {
   try {
-    const query = 'SELECT "userId", username FROM login WHERE flag = true';
-    const result = await pool.query(query);
-    res.json(result.rows);
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('flag', true);
+
+    if (error) {
+      console.error('Error retrieving members:', error);
+      return res.status(500).json({ message: 'Error retrieving members', error });
+    }
+    res.json(data);
   } catch (error) {
     console.error('Error retrieving members:', error.message);
     res.status(500).json({ message: 'Server error' });
   }
 });
+
 
 module.exports = router;

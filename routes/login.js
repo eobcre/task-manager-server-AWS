@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const pool = require('../db/db');
+const supabase = require('../db/db');
 const cors = require('cors');
+require('dotenv').config();
 
 cors({
   origin: 'https://emanning-app.xyz',
@@ -13,30 +14,23 @@ cors({
 
 router.post('/login', async (req, res) => {
   const { name, passcode } = req.body;
-  // console.log('username:', name);
-  // console.log('passcode', passcode);
 
   try {
-    const result = await pool.query('SELECT * FROM login WHERE username = $1', [name]);
-
-    if (result.rowCount === 0) {
-      return res.status(400).json({ message: 'User not found' });
+    const { data, error } = await supabase.from('users').select('*').eq('username', name);
+    
+    if (error || data.length === 0) {
+      return res.status(400).json({ message: 'User not found.' });
     }
-    // console.log('rows length', result.rows.length);
-    // console.log('result rows', result.rows);
 
-    const user = result.rows[0];
-    // console.log('user', user);
+    const user = data[0];
 
-    if (passcode !== user.passhash) {
+    if (passcode !== data[0].passhash) {
       return res.status(400).json({ message: 'Invalid credentials.' });
     }
-    // console.log('user.passhash', user.passhash);
 
     const token = jwt.sign({ id: user.userId }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
+
     res.json({ userId: user.userId, name, token, flag: user.flag });
-    // console.log('token', token);
-    // console.log('userId', userId);
   } catch (error) {
     console.error('Error login:', error);
     res.status(500).json({ message: 'Server error.' });
