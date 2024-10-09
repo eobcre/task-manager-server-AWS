@@ -12,7 +12,15 @@ cors({
 // router.use(cors());
 
 router.post('/assignTasks', async (req, res) => {
-  const { userId, userName, taskName, documentType, assignTo, description, flag } = req.body;
+  const {
+    userId,
+    userName,
+    taskName,
+    documentType,
+    assignTo,
+    description,
+    flag,
+  } = req.body;
 
   const newTask = new AssignTask({
     userId,
@@ -77,7 +85,9 @@ router.post('/retrieveMembers', async (req, res) => {
 
     if (error) {
       console.error('Error retrieving members:', error);
-      return res.status(500).json({ message: 'Error retrieving members', error });
+      return res
+        .status(500)
+        .json({ message: 'Error retrieving members', error });
     }
     res.json(data);
   } catch (error) {
@@ -85,6 +95,5 @@ router.post('/retrieveMembers', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
-
 
 module.exports = router;
