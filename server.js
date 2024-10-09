@@ -30,17 +30,18 @@ app.use('/api', tasksRoute);
 // mongo db
 const uri = `mongodb+srv://eobcre:${process.env.MONGO_PW}@cluster-0.h8ehx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-0`;
 
-mongoose
-  .connect(uri, {
-    dbName: 'demo_db',
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  // .connect(process.env.DB_URI, { dbName: 'sample_mflix' })
-  .then(() => {
+const connectMongoDB = async () => {
+  try {
+    await mongoose.connect(uri, {
+      dbName: 'demo_db',
+    });
     console.log('Connected to Mongo DB!');
-  })
-  .catch((err) => console.log(err));
+  } catch (err) {
+    console.log('Error connecting to MongoDB:', err);
+  }
+};
+
+connectMongoDB();
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running in ${process.env.PORT}`);
