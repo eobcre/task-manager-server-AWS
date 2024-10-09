@@ -28,9 +28,14 @@ app.use('/api', tasksRoute);
 // });
 
 // mongo db
-const uri = `mongodb+srv://eobcre:${process.env.MONGO_PW}@cluster-0.h8ehx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-0`
+const uri = `mongodb+srv://eobcre:${process.env.MONGO_PW}@cluster-0.h8ehx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-0`;
+
 mongoose
-  .connect(uri, { dbName: 'demo_db' })
+  .connect(uri, {
+    dbName: 'demo_db',
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   // .connect(process.env.DB_URI, { dbName: 'sample_mflix' })
   .then(() => {
     console.log('Connected to Mongo DB!');
