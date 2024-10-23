@@ -5,6 +5,9 @@
 This repository is the backend code integrated with <a href="https://github.com/eobcre/task-manager-client-AWS" target='_blank'
 rel='noopener noreferrer'>task-manager-client-AWS</a> repository.
 
+<a href="https://emanning-app.xyz" target='_blank'
+rel='noopener noreferrer'>Live Demo</a>
+
 - Node.js (Express.js)
 - Mongo DB
 - Supabase
