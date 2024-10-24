@@ -12,6 +12,8 @@ cors({
 // router.use(cors());
 
 router.post('/assignTasks', async (req, res) => {
+  // console.log(req.body);
+
   const {
     userId,
     userName,
@@ -27,7 +29,7 @@ router.post('/assignTasks', async (req, res) => {
     userName,
     taskName,
     documentType,
-    assignTo,
+    assignTo: assignTo ? assignTo : { userId: '', username: '' },
     description,
     flag,
   });
