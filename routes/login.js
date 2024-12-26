@@ -16,8 +16,11 @@ router.post('/login', async (req, res) => {
   const { name, passcode } = req.body;
 
   try {
-    const { data, error } = await supabase.from('users').select('*').eq('username', name);
-    
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('username', name);
+
     if (error || data.length === 0) {
       return res.status(400).json({ message: 'User not found.' });
     }
@@ -28,7 +31,9 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials.' });
     }
 
-    const token = jwt.sign({ id: user.userId }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user.userId }, process.env.TOKEN_SECRET, {
+      expiresIn: '1h',
+    });
 
     res.json({ userId: user.userId, name, token, flag: user.flag });
   } catch (error) {
